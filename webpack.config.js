@@ -8,9 +8,6 @@ module.exports = {
         print: './src/print.js'
     },
     devtool:'inline-source-map',
-    devServer:{
-        contentBase:'./dist'//告诉服务器在dist文件夹下查找文件
-    },
     plugins:[
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
@@ -19,7 +16,8 @@ module.exports = {
     ],
     output:{
         filename:'[name].bundle.js',
-        path:path.resolve(__dirname, 'dist')
+        path:path.resolve(__dirname, 'dist'),
+        publicPath:'/'
     },
     module:{
         rules:[
