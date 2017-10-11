@@ -1,21 +1,23 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     entry: {
         app: './src/index.js',
-        print: './src/print.js'
     },
     devtool:'inline-source-map',
     devServer:{
-        contentBase:'./dist'//告诉服务器在dist文件夹下查找文件
+        contentBase:'./dist',//告诉服务器在dist文件夹下查找文件
+        hot:true//开起热替换
     },
     plugins:[
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['dist']),//每次清空前一次的编译文件，即缓存
         new HtmlWebpackPlugin({
-            title: 'Output Management'
-        })
+            title: 'Hot Module Replacement'
+        }),
+        new webpack.HotModuleReplacementPlugin()//HMR
     ],
     output:{
         filename:'[name].bundle.js',

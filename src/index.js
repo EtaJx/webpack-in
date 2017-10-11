@@ -15,4 +15,14 @@ function component(){
     return element;
 }
 
+let element = component();//当print.js改变导致页面重新渲染时，重新获取渲染的元素
 document.body.appendChild(component());
+
+if(module.hot){
+    module.hot.accept('./print.js', function(){
+        console.log('Accepting the updated printMe module!');
+        document.body.removeChild(element);
+        element = component();//重新渲染页面后，component更新click时间处理
+        document.body.appendChild(element);
+    })
+}
