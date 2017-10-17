@@ -2,10 +2,14 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+const webpack = require('webpack');//提取模板`
+
 module.exports = {
     entry: {
         app: './src/index.js',
-        print: './src/print.js'
+        vendor:[
+            'lodash'
+        ]
     },
     devtool:'inline-source-map',
     devServer:{
@@ -14,11 +18,18 @@ module.exports = {
     plugins:[
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
-            title: 'Output Management'
+            title: 'Caching'
+        }),
+        new webpack.optimize.CommonsChunkPlugin({//CommonChunkPlugin 的 vendor 实例，必须在 runtime 实例之前引入
+            name:'vendor'
+        }),
+        new webpack.HashedModuleIdsPlugin(),
+        new webpack.optimize.CommonsChunkPlugin({
+            name:'runtime'//提取模板
         })
     ],
     output:{
-        filename:'[name].bundle.js',
+        filename:'[name].[chunckhash].js',
         path:path.resolve(__dirname, 'dist')
     },
     module:{
